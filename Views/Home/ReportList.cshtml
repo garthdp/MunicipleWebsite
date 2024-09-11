@@ -3,45 +3,94 @@
 @{
     ViewData["Title"] = "ReportList";
 }
+<div class="container">
+    <div class="leaderboard">
+        <div class="items">
+            <h1>Reports</h1>
+            <p>Create a report to earn 50xp.</p>
+            <p>
+                <a class="btn btn-primary" asp-action="CreateReport">Create New</a>
+            </p>
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Location)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Category)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Description)
+                        </th>
+                        <th>
+                            File
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+            @foreach (Report item in ViewBag.Reports) {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Location)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Category)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Description)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ImagePath)
+                        </td>
+                    </tr>
+            }
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<style>
+    .table-style {
+        width: 100%;
+        border-collapse: separate;
+        background-color: #E5FAFE;
+        border-radius: 12px;
+        border: 1px solid black;
+        border-spacing: 0;
+        margin-bottom: 10px;
+    }
 
-<h1>Reports</h1>
-<p>Create a report to earn 50xp.</p>
-<p>
-    <a class="btn btn-primary" asp-action="CreateReport">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Location)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImagePath)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (Report item in ViewBag.Reports) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImagePath)
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    th, td {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    tr:hover {
+        background-color: white;
+    }
+
+    .leaderboard {
+        width: 700px;
+        height: 100%;
+        padding: 10px 25px 10px 25px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        border-radius: 12px;
+        background-color: #E5FAFE;
+    }
+
+    .items {
+        width: 100%;
+        text-align: center;
+    }
+
+    .container {
+        width: max-content;
+        height: max-content;
+        display: flex;
+        justify-content: center;
+    }
+</style>
