@@ -2,75 +2,53 @@
     ViewData["Title"] = "Home Page";
 }
 
-<div class="text-center">
-    <div class="container">
-        <div class="leaderboard">
-            <div class="items">
-                <h1 class="display-4">Welcome</h1>
-                <hr />
-                <p>Complete tasks to earn experience to level up.</p>
-                <p>Every 100xp you will earn a level.</p>
-                <hr />
-                <a class="btn btn-style" asp-controller="Home" asp-action="CreateReport">Report Issues</a><br />
-                <a class="btn btn-style" asp-controller="Home" asp-action="Error">Local Events and Announcements</a><br />
-                <a class="btn btn-style" asp-controller="Home" asp-action="Error">Service Request Status</a><br />
-            </div>
+<div class="container">
+    <div class="leaderboard">
+        <div class="items">
+            <h1 class="display-4">Welcome</h1>
+            <hr class="divider" />
+            <p class="lead">Complete tasks to earn experience and level up.</p>
+            <p>Every 100xp will earn you a level.</p>
+            <hr class="divider" />
+            <a class="btn btn-primary" asp-controller="Home" asp-action="CreateReport">Report Issues</a><br />
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Events">Local Events and Announcements</a><br />
+            <a class="btn btn-primary" asp-controller="Home" asp-action="Status">Service Request Status</a><br />
         </div>
     </div>
 </div>
 
 <style>
-    .btn-style{
+    .btn-primary {
         width: 300px;
-        margin: 10px;
-        border-radius: 12px;
-        font-size: 20px;
-        text-align: center;
-        color: #fff;
-        background-color: #0d6efd;
-        border-color: #0d6efd;
     }
 
-    .table-style {
-        width: 100%;
-        border-collapse: separate;
-        background-color: white;
-        border-radius: 12px;
-        border: 1px solid black;
-        border-spacing: 0;
-        margin-bottom: 10px;
-    }
-
-    th, td {
-        border: 1px solid black;
-        border-radius: 12px;
-        padding: 10px;
-    }
-
-    tr:hover {
-        background-color: #E5FAFE;
+    .divider {
+        border-color: #007bff;
     }
 
     .leaderboard {
-        width: 700px;
-        height: 100%;
-        padding: 10px 25px 10px 25px;
-        border: 1px solid black;
-        display: flex;
-        justify-content: center;
+        max-width: 700px;
+        padding: 150px;
+        border: 1px solid #007bff;
         border-radius: 12px;
-        background-color: #E5FAFE;
+        background-color: #e9f7ff;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        margin: 0 auto;
     }
 
     .items {
-        width: 100%;
         text-align: center;
     }
 
     .container {
-        width: max-content;
-        height: max-content;
         display: flex;
         justify-content: center;
+        align-items: center;
+        min-height: 80vh;
+    }
+
+    .lead {
+        font-size: 1.25rem;
+        font-weight: 300;
     }
 </style>
