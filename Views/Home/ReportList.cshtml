@@ -1,0 +1,47 @@
+﻿@model IEnumerable<PROG_POE.Models.Report>
+
+@{
+    ViewData["Title"] = "ReportList";
+}
+
+<h1>Reports</h1>
+<p>Create a report to earn 50xp.</p>
+<p>
+    <a class="btn btn-primary" asp-action="CreateReport">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Location)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Category)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImagePath)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (Report item in ViewBag.Reports) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Location)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Category)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImagePath)
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

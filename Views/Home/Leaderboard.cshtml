@@ -1,0 +1,42 @@
+﻿@model IEnumerable<PROG_POE.Models.User>
+
+@{
+    ViewData["Title"] = "Leaderboard";
+}
+
+<h1>Leaderboard</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Position
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Username)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Level)
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @{
+            int i = 1;
+        }
+        @foreach (User item in ViewBag.Users) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => i)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Username)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Level)
+            </td>
+        </tr>
+        i++;
+}
+    </tbody>
+</table>

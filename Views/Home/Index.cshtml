@@ -4,5 +4,22 @@
 
 <div class="text-center">
     <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <p>Complete tasks to earn experience to level up.</p>
+    <p>Every 100xp you will earn a level.</p>
+    <a class="btn btn-style" asp-controller="Home" asp-action="CreateReport">Report Issues</a><br />
+    <a class="btn btn-style" asp-controller="Home" asp-action="Error">Local Events and Announcements</a><br />
+    <a class="btn btn-style" asp-controller="Home" asp-action="Error">Service Request Status</a><br />
 </div>
+
+<style>
+    .btn-style{
+        width: 300px;
+        margin: 10px;
+        border-radius: 12px;
+        font-size: 20px;
+        text-align: center;
+        color: #fff;
+        background-color: #0d6efd;
+        border-color: #0d6efd;
+    }
+</style>

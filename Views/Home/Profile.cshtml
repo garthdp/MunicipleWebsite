@@ -1,0 +1,79 @@
+﻿@model PROG_POE.Models.User
+
+@{
+    ViewData["Title"] = "Profile";
+}
+
+
+<div class="container">
+    <div class="sign-in">
+        <div class="items">
+            <h1>@ViewBag.Username</h1>
+            <div>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Level)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @ViewBag.Level
+                    </dd>
+                    <dt class="col-sm-2">
+                        @Html.DisplayNameFor(model => model.Experience)
+                    </dt>
+                    <dd class="col-sm-10">
+                        @ViewBag.Experience
+                    </dd>
+                    <div>
+                        <a class="btn btn-primary" asp-action="SignOut">Sign Out</a>
+                    </div>
+                </dl>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<style>
+    .btn-style {
+        width: 100px;
+        height: 50px;
+        margin: 10px;
+        border-radius: 12px;
+        background-color: lightskyblue;
+    }
+
+    .sign-in {
+        width: 100%;
+        height: 100%;
+        padding: 10px 25px 10px 25px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        border-radius: 12px;
+        background-color: #E5FAFE;
+    }
+
+    .label-error {
+        color: red;
+    }
+
+    .items {
+        text-align: center;
+    }
+
+    input {
+        border-radius: 12px;
+    }
+
+    label {
+        font-size: 20px;
+    }
+
+    .container {
+        width: max-content;
+        height: max-content;
+        display: flex;
+        justify-content: center;
+    }
+</style>
