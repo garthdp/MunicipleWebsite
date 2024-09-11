@@ -7,7 +7,7 @@
 
 <div class="container">
     <div class="sign-in">
-        <form asp-action="CreateReport">
+        <form asp-action="CreateReport" enctype="multipart/form-data">
             <h1>Create Report</h1>
             <hr />
             <div class="items">
@@ -29,7 +29,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="ImagePath" class="control-label">File</label>
-                    <input asp-for="ImagePath" type="file" class="form-control" />
+                    <input asp-for="ImagePath" name="SingleFile" type="file" class="form-control" />
                     <span asp-validation-for="ImagePath" class="text-danger"></span>
                 </div>
                 <label>@ViewBag.File</label>

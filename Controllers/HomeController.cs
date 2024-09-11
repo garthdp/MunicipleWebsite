@@ -12,15 +12,16 @@ namespace PROG_POE.Controllers
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-        private readonly IHttpContextAccessor _contx;
+        private readonly IWebHostEnvironment _webHost;
         List<Report> reports = new List<Report>();
         List<User> users = new List<User>();
         private string reportString = "";
         private string userString = "";
         private User currentUser;
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IWebHostEnvironment webHost)
         {
             _logger = logger;
+            _webHost = webHost;
         }
 
         public IActionResult Index()
@@ -155,12 +156,37 @@ namespace PROG_POE.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateReport(Report report)
+        public async Task<IActionResult> CreateReport(Report report, IFormFile SingleFile)
         {
             if (HttpContext.Session.GetString("SessionUser") == "")
             {
                 return RedirectToAction("SignIn");
             }
+
+            /* 
+             Code Attribution
+             Title: How to upload file in Asp.Net Core MVC | C# | IAmUmair
+             Used for: to save files 
+             Made by: IAmUmair
+             Link: https://www.youtube.com/watch?v=J2aoApd3mNA
+             */
+
+            // saves data to uploads folder
+            string uploadsFolder = Path.Combine(_webHost.WebRootPath, "uploads");
+            if (!Directory.Exists(uploadsFolder))
+            {
+                Directory.CreateDirectory(uploadsFolder);
+            }
+
+            string fileName = Path.GetFileName(SingleFile.FileName);
+            string fileSavePath = Path.Combine(uploadsFolder, fileName);
+
+            using (FileStream stream = new FileStream(fileSavePath, FileMode.Create))
+            {
+                report.ImagePath = SingleFile.FileName;
+                await SingleFile.CopyToAsync(stream);
+            }
+
             List<Report> reports = new List<Report>();
             reports = JsonConvert.DeserializeObject<List<Report>>(HttpContext.Session.GetString("Reports"));
             reports.Add(report);
