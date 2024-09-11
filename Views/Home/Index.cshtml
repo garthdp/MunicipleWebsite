@@ -3,12 +3,20 @@
 }
 
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Complete tasks to earn experience to level up.</p>
-    <p>Every 100xp you will earn a level.</p>
-    <a class="btn btn-style" asp-controller="Home" asp-action="CreateReport">Report Issues</a><br />
-    <a class="btn btn-style" asp-controller="Home" asp-action="Error">Local Events and Announcements</a><br />
-    <a class="btn btn-style" asp-controller="Home" asp-action="Error">Service Request Status</a><br />
+    <div class="container">
+        <div class="leaderboard">
+            <div class="items">
+                <h1 class="display-4">Welcome</h1>
+                <hr />
+                <p>Complete tasks to earn experience to level up.</p>
+                <p>Every 100xp you will earn a level.</p>
+                <hr />
+                <a class="btn btn-style" asp-controller="Home" asp-action="CreateReport">Report Issues</a><br />
+                <a class="btn btn-style" asp-controller="Home" asp-action="Error">Local Events and Announcements</a><br />
+                <a class="btn btn-style" asp-controller="Home" asp-action="Error">Service Request Status</a><br />
+            </div>
+        </div>
+    </div>
 </div>
 
 <style>
@@ -21,5 +29,47 @@
         color: #fff;
         background-color: #0d6efd;
         border-color: #0d6efd;
+    }
+
+    .table-style {
+        width: 100%;
+        border-collapse: separate;
+        background-color: white;
+        border-radius: 12px;
+        border: 1px solid black;
+        border-spacing: 0;
+        margin-bottom: 10px;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    tr:hover {
+        background-color: #E5FAFE;
+    }
+
+    .leaderboard {
+        width: 700px;
+        height: 100%;
+        padding: 10px 25px 10px 25px;
+        border: 1px solid black;
+        display: flex;
+        justify-content: center;
+        border-radius: 12px;
+        background-color: #E5FAFE;
+    }
+
+    .items {
+        width: 100%;
+        text-align: center;
+    }
+
+    .container {
+        width: max-content;
+        height: max-content;
+        display: flex;
+        justify-content: center;
     }
 </style>
