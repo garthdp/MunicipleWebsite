@@ -44,3 +44,12 @@ A municiple system which allows users to create and view reports.
 ### Profile Page
 ![image](https://github.com/user-attachments/assets/520f4c96-56ac-48f5-9a27-9ed6d664cf00)
 * Here users can view their level, experience are able to sign out.
+
+### Error page
+![image](https://github.com/user-attachments/assets/cae9d668-e37c-4b1d-8676-7793c8d71417)
+* This page shows an error when trying to access features which have not been made yet such as the other two buttons on home page.
+
+### Other Error Handeling
+![image](https://github.com/user-attachments/assets/e8cfe19d-0ed1-4244-8fe2-264965d833a0)
+![image](https://github.com/user-attachments/assets/8dbb6f3c-70b5-4df3-a7d4-038f9f5fee46)
+* Error messages when the user doesn't input information into input boxes.
