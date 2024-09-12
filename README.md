@@ -1,4 +1,4 @@
-![image](https://github.com/user-attachments/assets/cb2cdd55-d3c3-4f0f-a853-26ebddfa102b)# PROG7312 Part 1
+# PROG7312 Part 1
 
 A municiple system which allows users to create and view reports.
 
@@ -28,7 +28,7 @@ A municiple system which allows users to create and view reports.
 * Here users will be able to report issues. All fields must be filled in for the report to be made, this includes the location, the category, a discription and a file which could add extra context.
 * The uploaded files are saved to the file "uploads" inside the project, in the wwwroot folder.
 
-![image](https://github.com/user-attachments/assets/18d9473e-fee3-491c-96c2-681514f22649)
+![image](https://github.com/user-attachments/assets/67f3b283-b676-4ed1-9979-bdb685cb65fb)
 * This page also has a progress bar which fills up as the user inputs data.
 
 ### Reports list
