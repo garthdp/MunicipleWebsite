@@ -158,6 +158,15 @@ namespace PROG_POE.Controllers
             }
             else
             {
+                /* 
+                    Code Attribution
+                    Title: Display Invalid Login Details message using MVC code
+                    Used for: to display error message when signing in with incorrect information
+                    Made by: Rahul Sharma
+                    Stackoverflow post: https://stackoverflow.com/questions/55391046/display-invalid-login-details-message-using-mvc-code
+                    Answer User's Profile Link: https://stackoverflow.com/users/1807452/rahul-sharma
+                */
+                ModelState.AddModelError(string.Empty, "Invalid Credentials Supplied");
                 return View();
             }
         }
