@@ -13,7 +13,8 @@
                 <a class="btn btn-primary" asp-action="CreateReport">Create New</a>
             </p>
             <hr />
-            <table class="table-style">
+            <div>
+                <table class="table-style">
                 <thead>
                     <tr>
                         <th>
@@ -49,6 +50,8 @@
             }
                 </tbody>
             </table>
+            </div>
+            
         </div>
     </div>
 </div>
@@ -86,6 +89,8 @@
 
     .items {
         width: 100%;
+        max-height: 90vh;
+        overflow-y: auto;
         text-align: center;
     }
 

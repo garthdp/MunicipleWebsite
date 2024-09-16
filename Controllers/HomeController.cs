@@ -88,7 +88,7 @@ namespace PROG_POE.Controllers
             users = JsonConvert.DeserializeObject<List<User>>(HttpContext.Session.GetString("Users"));
 
             //sorts users by highest level to lowest level
-            var sortedUsersByLevel = users.OrderByDescending(x => x.Level);
+            var sortedUsersByLevel = users.OrderByDescending(x => x.Level).Take(10);
             ViewBag.Users = sortedUsersByLevel;
             return View();
         }
@@ -117,19 +117,41 @@ namespace PROG_POE.Controllers
              Link: https://www.youtube.com/watch?v=6bPeFO10GN4
              */
 
-            reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+            // makes dummy data if it does not exsist
+            if (HttpContext.Session.GetString("Reports") == null)
+            {
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
+                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
 
-            //makes report list for session on sign in 
-            string reportsString = JsonConvert.SerializeObject(reports);
-            HttpContext.Session.SetString("Reports", reportsString);
+                //makes report list for session on sign in 
+                string reportsString = JsonConvert.SerializeObject(reports);
+                HttpContext.Session.SetString("Reports", reportsString);
+            }
 
-            //makes user list for session on sign in 
-            users.Add(new User("Garth", "password", 5, 0));
-            users.Add(new User("Ryan", "password", 3, 50));
-            users.Add(new User("Seth", "password", 2, 0));
-            users.Add(new User("Nate", "password", 7, 50));
-            string usersString = JsonConvert.SerializeObject(users);
-            HttpContext.Session.SetString("Users", usersString);
+            // makes dummy data if it does not exsist
+            if (HttpContext.Session.GetString("Users") == null)
+            {
+                //makes user list for session on sign in 
+                users.Add(new User("Garth", "password", 5, 0));
+                users.Add(new User("Ryan", "password", 3, 50));
+                users.Add(new User("Seth", "password", 2, 0));
+                users.Add(new User("Nate", "password", 7, 50));
+                string usersString = JsonConvert.SerializeObject(users);
+                HttpContext.Session.SetString("Users", usersString);
+            }
 
             return View();
         }
@@ -167,6 +189,49 @@ namespace PROG_POE.Controllers
                     Answer User's Profile Link: https://stackoverflow.com/users/1807452/rahul-sharma
                 */
                 ModelState.AddModelError(string.Empty, "Invalid Credentials Supplied");
+                return View();
+            }
+        }
+
+        public IActionResult SignUp()
+        {
+            return View();
+        }
+
+        //signs up user
+        [HttpPost]
+        public IActionResult SignUp(User user)
+        {
+            // gets list of users
+            List<User> users = new List<User>();
+            users = JsonConvert.DeserializeObject<List<User>>(HttpContext.Session.GetString("Users"));
+            var foundUser = users.Where(x => x.Username == user.Username).FirstOrDefault();
+
+            if (foundUser == null)
+            {
+                User user1 = new User();
+                user1.Level = 0;
+                user1.Experience = 0;
+                user1.Username = user.Username;
+                user1.Password = user.Password;
+                users.Add(user1);
+
+                // saves updated list to session
+                string usersString = JsonConvert.SerializeObject(users);
+                HttpContext.Session.SetString("Users", usersString);
+                return View();
+            }
+            else
+            {
+                /* 
+                    Code Attribution
+                    Title: Display Invalid Login Details message using MVC code
+                    Used for: to display error message when signing in with incorrect information
+                    Made by: Rahul Sharma
+                    Stackoverflow post: https://stackoverflow.com/questions/55391046/display-invalid-login-details-message-using-mvc-code
+                    Answer User's Profile Link: https://stackoverflow.com/users/1807452/rahul-sharma
+                */
+                ModelState.AddModelError(string.Empty, "User exists.");
                 return View();
             }
         }
