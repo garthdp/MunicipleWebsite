@@ -121,20 +121,6 @@ namespace PROG_POE.Controllers
             if (HttpContext.Session.GetString("Reports") == null)
             {
                 reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
-                reports.Add(new Report("Location Test", "Roads", "Lots of potholes", "Example of pothole"));
 
                 //makes report list for session on sign in 
                 string reportsString = JsonConvert.SerializeObject(reports);
@@ -219,7 +205,7 @@ namespace PROG_POE.Controllers
                 // saves updated list to session
                 string usersString = JsonConvert.SerializeObject(users);
                 HttpContext.Session.SetString("Users", usersString);
-                return View();
+                return RedirectToAction("SignIn");
             }
             else
             {
