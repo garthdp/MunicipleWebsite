@@ -1,0 +1,27 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@model List<PROG_POE.Models.MunicipalityEvent>
+<p>@DateTime.Now</p>
+<table>
+    <tr>
+        <th>Event Name</th>
+        <th>EventDescription</th>
+        <th>Event Date and Time</th>
+        <th>Event Category</th>
+        <th>EventLocation</th>
+    </tr>
+    @foreach (var ev in Model)
+    {
+        <tr>
+            @if(ev.EventDateTime >= DateTime.Now)
+            {
+                <td>@ev.EventName</td>
+                <td>@ev.EventDateTime</td>
+                <td>@ev.EventDescription</td>
+                <td>@ev.EventLocation</td>
+                <td>@ev.EventCategory</td>
+            }
+        </tr>
+    }
+</table>
