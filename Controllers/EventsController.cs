@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using PROG_POE.Models;
 using System.Diagnostics;
 
@@ -10,6 +11,8 @@ namespace PROG_POE.Controllers
         HashSet<string> Categories = new HashSet<string>();
         EventsQueue que = new EventsQueue();
         Dictionary<string, MunicipalityEvent> Events = new Dictionary<string, MunicipalityEvent>();
+        HashSet<Annoncement> Annoncements = new HashSet<Annoncement>();
+        EventsPage values = new EventsPage();
         public EventsController(IWebHostEnvironment webHostEnvironment)
         {
             // adding different event categories
@@ -20,6 +23,12 @@ namespace PROG_POE.Controllers
             Categories.Add("Enviroment");
             Categories.Add("Sports");
             Categories.Add("Meetings and Conferences");
+
+            Annoncements.Add(new Annoncement("New Town Hall", "A new Town Hall is being built in central."));
+            Annoncements.Add(new Annoncement("Loadshedding", "Loadshedding is set to begin again on the 25th of December."));
+            Annoncements.Add(new Annoncement("Water", "Water will be cut off from 5pm on the 11th of November till 10am on the 12th of November."));
+            Annoncements.Add(new Annoncement("Crime", "Crime is on the rise, be sure to report any suspicious activity."));
+            Annoncements.Add(new Annoncement("Rubbish", "Rubbish will not be collected this comming week."));
 
             MunicipalityEvent event1 = new MunicipalityEvent("Beach Cleanup",
                 "Clean up taking place at Kings Beach. Please wear clothes which you do not mind getting dirty.",
@@ -105,25 +114,34 @@ namespace PROG_POE.Controllers
                 "Enviroment",
                 "Loraine, Gqeberha");
 
-            // add events to dictionary
-            Events.Add(event1.EventName + ":" + event1.EventDateTime, event1);
-            Events.Add(event2.EventName + ":" + event2.EventDateTime, event2);
-            Events.Add(event3.EventName + ":" + event3.EventDateTime, event3);
-            Events.Add(event4.EventName + ":" + event4.EventDateTime, event4);
-            Events.Add(event5.EventName + ":" + event5.EventDateTime, event5);
-            Events.Add(event6.EventName + ":" + event6.EventDateTime, event6);
-            Events.Add(event7.EventName + ":" + event7.EventDateTime, event7);
-            Events.Add(event8.EventName + ":" + event8.EventDateTime, event8);
-            Events.Add(event9.EventName + ":" + event9.EventDateTime, event9);
-            Events.Add(event10.EventName + ":" + event10.EventDateTime, event10);
-            Events.Add(event11.EventName + ":" + event11.EventDateTime, event11);
-            Events.Add(event12.EventName + ":" + event12.EventDateTime, event12);
-            Events.Add(event13.EventName + ":" + event13.EventDateTime, event13);
-            Events.Add(event14.EventName + ":" + event14.EventDateTime, event14);
+            // adds events to queue
+            que.enqueue(event1); 
+            que.enqueue(event2);
+            que.enqueue(event3);
+            que.enqueue(event4);
+            que.enqueue(event5);
+            que.enqueue(event6);
+            que.enqueue(event7);
+            que.enqueue(event8);
+            que.enqueue(event9);
+            que.enqueue(event10);
+            que.enqueue(event11);
+            que.enqueue(event12);
+            que.enqueue(event13);
+            que.enqueue(event14);
 
-            foreach(KeyValuePair<string, MunicipalityEvent> ev in Events)
+            bool found = true;
+            while (found)
             {
-                que.enqueue(ev.Value);
+                MunicipalityEvent ev = que.dequeue();
+                if (ev != null)
+                {
+                    Events.Add(ev.EventName + ":" + ev.EventDateTime, ev);
+                }
+                else
+                {
+                    found = false; 
+                }
             }
 
             _webHostEnvironment = webHostEnvironment;
@@ -132,8 +150,9 @@ namespace PROG_POE.Controllers
         public IActionResult Index()
         {
             que.peek();
-            var events = Events.Values.ToList();
-            return View(events);
+
+            EventsPage values = new EventsPage(Annoncements, Events);
+            return View(values);
         }
     }
 }

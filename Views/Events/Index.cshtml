@@ -1,27 +1,161 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
-@model List<PROG_POE.Models.MunicipalityEvent>
-<p>@DateTime.Now</p>
-<table>
-    <tr>
-        <th>Event Name</th>
-        <th>EventDescription</th>
-        <th>Event Date and Time</th>
-        <th>Event Category</th>
-        <th>EventLocation</th>
-    </tr>
-    @foreach (var ev in Model)
-    {
-        <tr>
-            @if(ev.EventDateTime >= DateTime.Now)
-            {
-                <td>@ev.EventName</td>
-                <td>@ev.EventDateTime</td>
-                <td>@ev.EventDescription</td>
-                <td>@ev.EventLocation</td>
-                <td>@ev.EventCategory</td>
+@model PROG_POE.Models.EventsPage
+
+<head>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        .announcements-list {
+            overflow-y: scroll;
+            background-color: #e9f7ff;
+            border: 1px solid #007bff;
+            padding: 10px;
+            height: 200px;
+            display: grid;
+            gap: 10px;
+        }
+
+        #announcements {
+            color: black;
+            padding: 10px;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+            #announcements h2 {
+                margin: 0;
             }
-        </tr>
-    }
-</table>
+
+        .annoncement-item {
+            padding: 20px;
+            height: 100px;
+            background-color: white;
+            border: 1px solid red;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        #events-section {
+            padding: 20px;
+        }
+
+            #events-section h2 {
+                color: #333;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+
+        .search-bar {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+            .search-bar input {
+                padding: 10px;
+                width: 50%;
+                margin-right: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            .search-bar button {
+                padding: 10px 15px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 5px;
+                cursor: pointer;
+            }
+
+                .search-bar button:hover {
+                    background-color: #007bff;
+                }
+
+        .event-list {
+            display: grid;
+            gap: 20px;
+        }
+
+        .event-item {
+            background-color: #e9f7ff;
+            padding: 20px;
+            border: 1px solid #007bff;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+            .event-item h3 {
+                margin-top: 0;
+                color: #333;
+                border-bottom: 2px solid #007bff;
+                padding-bottom: 10px;
+            }
+
+            .event-item p {
+                margin: 5px 0;
+                color: #666;
+            }
+
+            .event-item .event-date {
+                color: #007bff;
+                font-weight: bold;
+            }
+
+            .event-item .event-location {
+                color: #333;
+                font-style: italic;
+            }
+    </style>
+</head>
+
+<body>
+    <header id="announcements">
+        <h2>Latest Announcements</h2>
+    </header>
+    <div class="announcements-list">
+        @foreach(var annoncement in Model.annoncements)
+        {
+            <div class="annoncement-item">
+                <h3>@annoncement.AnnoncementTitle</h3>
+                <p>Description: @annoncement.AnnoncementMessage</p>
+            </div>
+        }
+    </div>
+    <section id="events-section">
+
+    </section>
+
+    <section id="events-section">
+        <h2>Upcoming Events</h2>
+
+        <div class="search-bar">
+            <form method="get" asp-action="Index">
+                <input type="text" name="searchString" placeholder="Search for events by name or category..." />
+                <button type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="event-list">
+            @foreach (var ev in Model.municipalityEvents)
+            {
+                @if (ev.Value.EventDateTime >= DateTime.Now)
+                {
+                    <div class="event-item">
+                        <h3>@ev.Value.EventName</h3>
+                        <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                        <p class="event-location">Location: @ev.Value.EventLocation</p>
+                        <p>Category: @ev.Value.EventCategory</p>
+                        <p>Description: @ev.Value.EventDescription</p>
+                    </div>
+                }
+            }
+        </div>
+    </section>
+</body>
