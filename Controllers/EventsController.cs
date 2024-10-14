@@ -87,7 +87,7 @@ namespace PROG_POE.Controllers
             MunicipalityEvent event10 = new MunicipalityEvent("Town Meeting",
                 "A meeting will take place at the town hall to discuss what changes can be implemented to help homeless people.",
                 DateTime.Parse("11-30-2024 14:00:00"),
-                "Community Service",
+                "Meetings and Conferences",
                 "Kings Beach, Summerstrand, Gqeberha");
 
             MunicipalityEvent event11 = new MunicipalityEvent("NMMU Madibaz Rugby vs Rhodes",
@@ -151,8 +151,50 @@ namespace PROG_POE.Controllers
         {
             que.peek();
 
-            EventsPage values = new EventsPage(Annoncements, Events);
+            EventsPage values = new EventsPage(Annoncements, Events, Categories);
             return View(values);
+        }
+        [HttpGet]
+        public IActionResult Index(string searchString, string eventCategory, DateTime? eventDate)
+        {
+            var exactEvents = from e in Events.Values
+                         select e;
+            var sameDayEvents = from e in Events.Values
+                                where eventDate.HasValue && e.EventDateTime.Date == eventDate.Value.Date
+                                select e;
+            var sameCategoryEvents = from e in Events.Values
+                                     where e.EventCategory == eventCategory
+                                     select e;
+
+            // removes searched event
+            sameCategoryEvents = sameCategoryEvents.Where(e => e.EventName != searchString);
+            sameDayEvents = sameDayEvents.Where(e => e.EventName != searchString);
+
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                exactEvents = exactEvents.Where(s => s.EventName.Contains(searchString));
+            }
+
+            if (!String.IsNullOrEmpty(eventCategory))
+            {
+                exactEvents = exactEvents.Where(s => s.EventCategory == eventCategory);
+            }
+
+            if (eventDate.HasValue)
+            {
+                exactEvents = exactEvents.Where(s => s.EventDateTime.Date == eventDate.Value.Date);
+            }
+
+            var model = new EventsPage
+            {
+                annoncements = Annoncements,
+                municipalityEvents = exactEvents.ToDictionary(e => e.EventName + ":" + e.EventDateTime),
+                categorySearchEvents = sameCategoryEvents.ToDictionary(e => e.EventName + ":" + e.EventDateTime),
+                dateSearchEvents = sameDayEvents.ToDictionary(e => e.EventName + ":" + e.EventDateTime),
+                categories = Categories
+            };
+
+            return View(model);
         }
     }
 }

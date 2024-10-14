@@ -14,8 +14,6 @@
 
         .announcements-list {
             overflow-y: scroll;
-            background-color: #e9f7ff;
-            border: 1px solid #007bff;
             padding: 10px;
             height: 200px;
             display: grid;
@@ -57,10 +55,11 @@
             text-align: center;
         }
 
-            .search-bar input {
+            .search-bar input, .search-bar select {
                 padding: 10px;
                 width: 50%;
                 margin-right: 10px;
+                margin:5px;
                 border: 1px solid #ccc;
                 border-radius: 5px;
             }
@@ -80,6 +79,9 @@
 
         .event-list {
             display: grid;
+            max-height: 300px;
+            overflow: auto;
+            margin-bottom:20px;
             gap: 20px;
         }
 
@@ -137,7 +139,16 @@
 
         <div class="search-bar">
             <form method="get" asp-action="Index">
-                <input type="text" name="searchString" placeholder="Search for events by name or category..." />
+                <input type="text" name="searchString" placeholder="Search for events by name..." />
+                <br />
+                <select name="eventCategory">
+                    <option value="">All Categories</option>
+                    @foreach (var category in Model.categories)
+                    {
+                        <option value="@category">@category</option>
+                    }
+                </select><br />
+                <input type="date" name="eventDate" /><br />
                 <button type="submit">Search</button>
             </form>
         </div>
@@ -155,6 +166,51 @@
                         <p>Description: @ev.Value.EventDescription</p>
                     </div>
                 }
+            }
+        </div>
+        @if(Model.categorySearchEvents.Count > 0)
+        {
+            <h2>Events with the same category</h2>
+            <div class="event-list">
+                @foreach (var ev in Model.categorySearchEvents)
+                {
+                    <div class="event-item">
+                        <h3>@ev.Value.EventName</h3>
+                        <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                        <p class="event-location">Location: @ev.Value.EventLocation</p>
+                        <p>Category: @ev.Value.EventCategory</p>
+                        <p>Description: @ev.Value.EventDescription</p>
+                    </div>
+                }
+            </div>
+        }
+        @if (Model.dateSearchEvents.Count > 0)
+        {
+            <h2>Events happening on the same day</h2>
+            <div class="event-list">
+                @foreach (var ev in Model.dateSearchEvents)
+                {
+                    <div class="event-item">
+                        <h3>@ev.Value.EventName</h3>
+                        <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                        <p class="event-location">Location: @ev.Value.EventLocation</p>
+                        <p>Category: @ev.Value.EventCategory</p>
+                        <p>Description: @ev.Value.EventDescription</p>
+                    </div>
+                }
+            </div>
+        }
+        <h2>Recommended Events</h2>
+        <div class="event-list">
+            @foreach (var ev in Model.municipalityEvents)
+            {
+                <div class="event-item">
+                    <h3>@ev.Value.EventName</h3>
+                    <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                    <p class="event-location">Location: @ev.Value.EventLocation</p>
+                    <p>Category: @ev.Value.EventCategory</p>
+                    <p>Description: @ev.Value.EventDescription</p>
+                </div>
             }
         </div>
     </section>
