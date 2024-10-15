@@ -73,6 +73,7 @@ namespace PROG_POE.Controllers
         public ActionResult SignOut()
         {
             HttpContext.Session.SetString("SessionUser", "");
+            HttpContext.Session.SetString("UserSearches", "");
             return RedirectToAction("SignIn", "Home");
         }
         public IActionResult Leaderboard()

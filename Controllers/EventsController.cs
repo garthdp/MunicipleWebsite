@@ -1,7 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using PROG_POE.Models;
 using System.Diagnostics;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace PROG_POE.Controllers
 {
@@ -13,6 +16,7 @@ namespace PROG_POE.Controllers
         Dictionary<string, MunicipalityEvent> Events = new Dictionary<string, MunicipalityEvent>();
         HashSet<Annoncement> Annoncements = new HashSet<Annoncement>();
         EventsPage values = new EventsPage();
+        Queue<UserSearch> userSearches = new Queue<UserSearch>();
         public EventsController(IWebHostEnvironment webHostEnvironment)
         {
             // adding different event categories
@@ -93,13 +97,13 @@ namespace PROG_POE.Controllers
             MunicipalityEvent event11 = new MunicipalityEvent("NMMU Madibaz Rugby vs Rhodes",
                 "There will be a rugby match between NMU Madibaz and Rhodes. Tickets cost R100.",
                 DateTime.Parse("11-26-2024 16:00:00"),
-                "Sport",
+                "Sports",
                 "NMU university, Summerstrand, Gqeberha");
 
             MunicipalityEvent event12 = new MunicipalityEvent("Eastern Province Elephants vs Sharks",
                 "There will be a rugby match between Eastern Province Elephants and Sharks. Tickets cost R400.",
                 DateTime.Parse("11-15-2024 16:00:00"),
-                "Sport",
+                "Sports",
                 "Nelson Mandela Bay Stadium, North End, Gqeberha");
 
             MunicipalityEvent event13 = new MunicipalityEvent("Town Meeting",
@@ -136,7 +140,7 @@ namespace PROG_POE.Controllers
                 MunicipalityEvent ev = que.dequeue();
                 if (ev != null)
                 {
-                    Events.Add(ev.EventName + ":" + ev.EventDateTime, ev);
+                    Events.Add(ev.EventName.Trim().ToLower() + ":" + ev.EventDateTime, ev);
                 }
                 else
                 {
@@ -149,7 +153,12 @@ namespace PROG_POE.Controllers
 
         public IActionResult Index()
         {
-            que.peek();
+            var sessionData = HttpContext.Session.GetString("UserSearches");
+            if (string.IsNullOrEmpty(sessionData))
+            {
+                userSearches.Enqueue(new UserSearch("", "", DateTime.MinValue));
+                HttpContext.Session.SetString("UserSearches", JsonConvert.SerializeObject(userSearches));
+            }
 
             EventsPage values = new EventsPage(Annoncements, Events, Categories);
             return View(values);
@@ -158,7 +167,7 @@ namespace PROG_POE.Controllers
         public IActionResult Index(string searchString, string eventCategory, DateTime? eventDate)
         {
             var exactEvents = from e in Events.Values
-                         select e;
+                              select e;
             var sameDayEvents = from e in Events.Values
                                 where eventDate.HasValue && e.EventDateTime.Date == eventDate.Value.Date
                                 select e;
@@ -166,16 +175,12 @@ namespace PROG_POE.Controllers
                                      where e.EventCategory == eventCategory
                                      select e;
 
-            // removes searched event
-            sameCategoryEvents = sameCategoryEvents.Where(e => e.EventName != searchString);
-            sameDayEvents = sameDayEvents.Where(e => e.EventName != searchString);
-
-            if (!String.IsNullOrEmpty(searchString))
+            if (!string.IsNullOrEmpty(searchString))
             {
-                exactEvents = exactEvents.Where(s => s.EventName.Contains(searchString));
+                exactEvents = exactEvents.Where(s => s.EventName.ToLower().Contains(searchString.Trim().ToLower()));
             }
 
-            if (!String.IsNullOrEmpty(eventCategory))
+            if (!string.IsNullOrEmpty(eventCategory))
             {
                 exactEvents = exactEvents.Where(s => s.EventCategory == eventCategory);
             }
@@ -185,16 +190,146 @@ namespace PROG_POE.Controllers
                 exactEvents = exactEvents.Where(s => s.EventDateTime.Date == eventDate.Value.Date);
             }
 
+            Dictionary<string, MunicipalityEvent> searchEvents = exactEvents.ToDictionary(e => e.EventName.Trim().ToLower() + ":" + e.EventDateTime);
+            Dictionary<string, MunicipalityEvent> categoryEvents = sameCategoryEvents.ToDictionary(e => e.EventName.Trim().ToLower() + ":" + e.EventDateTime);
+            Dictionary<string, MunicipalityEvent> dateEvents = sameDayEvents.ToDictionary(e => e.EventName.Trim().ToLower() + ":" + e.EventDateTime);
+            Dictionary<string, MunicipalityEvent> recommenedEvents = makeReccomendation(searchString, eventCategory, eventDate);
+
+            if (categoryEvents.Count > 0)
+            {
+                foreach (var ev in categoryEvents)
+                {
+                    foreach (var foundEv in searchEvents)
+                    {
+                        if (ev.Value == foundEv.Value)
+                        {
+                            categoryEvents.Remove(ev.Key);
+                        }
+                    }
+                }
+            }
+            if (dateEvents.Count > 0)
+            {
+                foreach (var ev in dateEvents)
+                {
+                    foreach (var foundEv in searchEvents)
+                    {
+                        if (ev.Value == foundEv.Value)
+                        {
+                            dateEvents.Remove(ev.Key);
+                        }
+                    }
+                }
+            }
+            if (recommenedEvents.Count > 0)
+            {
+                foreach (var ev in recommenedEvents)
+                {
+                    foreach (var foundEv in searchEvents)
+                    {
+                        if (ev.Value == foundEv.Value)
+                        {
+                            recommenedEvents.Remove(ev.Key);
+                        }
+                    }
+                }
+            }
+
+            /* 
+             Code Attribution
+             Title: Check if two lists are equal
+             Used for: to check if event dictionaries are exactly the same
+             Made by: Selman Genç
+             Link: https://stackoverflow.com/questions/22173762/check-if-two-lists-are-equal
+             profile: https://stackoverflow.com/users/3010968/selman-gen%c3%a7
+             */
+
+            if (searchEvents.Values.ToList().All(categoryEvents.Values.ToList().Contains) && searchEvents.Count == categoryEvents.Count)
+            {
+                categoryEvents = new Dictionary<string, MunicipalityEvent>();
+            }
+            if (searchEvents.Values.ToList().All(dateEvents.Values.ToList().Contains) && searchEvents.Count == dateEvents.Count)
+            {
+                dateEvents = new Dictionary<string, MunicipalityEvent>();
+            }
+
             var model = new EventsPage
             {
                 annoncements = Annoncements,
-                municipalityEvents = exactEvents.ToDictionary(e => e.EventName + ":" + e.EventDateTime),
-                categorySearchEvents = sameCategoryEvents.ToDictionary(e => e.EventName + ":" + e.EventDateTime),
-                dateSearchEvents = sameDayEvents.ToDictionary(e => e.EventName + ":" + e.EventDateTime),
+                municipalityEvents = searchEvents,
+                categorySearchEvents = categoryEvents,
+                dateSearchEvents = dateEvents,
+                recommendedEvents = recommenedEvents,
                 categories = Categories
             };
 
             return View(model);
+        }
+        public Dictionary<string, MunicipalityEvent> makeReccomendation(string searchString, string category, DateTime? date)
+        {
+            var sessionData = HttpContext.Session.GetString("UserSearches");
+
+            if (string.IsNullOrEmpty(sessionData))
+            {
+                userSearches = new Queue<UserSearch>();
+            }
+            else
+            {
+                userSearches = JsonConvert.DeserializeObject<Queue<UserSearch>>(sessionData);
+            }
+            if (searchString == null && category == null && !date.HasValue)
+            {
+                Dictionary<string, MunicipalityEvent> emptyDictionary = new Dictionary<string, MunicipalityEvent> ();
+                return emptyDictionary;
+            }
+            UserSearch searches = new UserSearch(searchString, category, date);
+            userSearches.Enqueue(searches);
+            HashSet<MunicipalityEvent> recommendedHashsetEvents = new HashSet<MunicipalityEvent>();
+            Dictionary<string, MunicipalityEvent> recommendedEvents = new Dictionary<string, MunicipalityEvent>();
+            if (userSearches.Count > 5)
+            {
+                userSearches.Dequeue();
+            }
+            foreach (var search in userSearches)
+            {
+                foreach (var ev in Events.Values)
+                {
+                    if (!string.IsNullOrEmpty(search.StringSearch))
+                    {
+                        List<string> keywords = search.StringSearch.Trim().ToLower().Split(" ").ToList();
+                        for (int i = 0; i < keywords.Count; i++)
+                        {
+                            if (ev.EventName.ToLower().Contains(keywords[i]))
+                            {
+                                recommendedHashsetEvents.Add(ev);
+                            }
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(search.CategorySearch))
+                    {
+                        if (ev.EventCategory == search.CategorySearch)
+                        {
+                            recommendedHashsetEvents.Add(ev);
+                        }
+                    }
+                    if (search.DateSearch.HasValue)
+                    {
+                        if (ev.EventDateTime.Date == search.DateSearch.Value.Date)
+                        {
+                            recommendedHashsetEvents.Add(ev);
+                        }
+                    }
+                }
+            }
+
+            foreach (var e in recommendedHashsetEvents)
+            {
+                recommendedEvents.Add(e.EventName.Trim().ToLower() + ":" + e.EventDateTime.Date, e);
+            }
+
+            string saveSearches = JsonConvert.SerializeObject(userSearches);
+            HttpContext.Session.SetString("UserSearches", saveSearches);
+            return recommendedEvents;
         }
     }
 }
