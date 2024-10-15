@@ -253,6 +253,20 @@ namespace PROG_POE.Controllers
                             recommenedEvents.Remove(ev.Key);
                         }
                     }
+                    foreach (var dateEv in dateEvents)
+                    {
+                        if (ev.Value == dateEv.Value)
+                        {
+                            recommenedEvents.Remove(ev.Key);
+                        }
+                    }
+                    foreach (var catEv in categoryEvents)
+                    {
+                        if (ev.Value == catEv.Value)
+                        {
+                            recommenedEvents.Remove(ev.Key);
+                        }
+                    }
                 }
             }
 
