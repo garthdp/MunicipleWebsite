@@ -241,7 +241,7 @@ namespace PROG_POE.Controllers
                     }
                 }
             }
-            // Removes found events from recommened events so that it doesnt recommend the found event.
+            // Removes found events from recommened events so that it doesnt recommend the found event or other recommended events.
             if (recommenedEvents.Count > 0)
             {
                 foreach (var ev in recommenedEvents)
