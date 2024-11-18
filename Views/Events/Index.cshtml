@@ -5,75 +5,91 @@
 
 <head>
     <style>
+        .announcements-sidebar {
+            height: 100%;
+            width: 260px; 
+            position: fixed; 
+            z-index: 1; 
+            top: 0; 
+            right: 0;
+            background-color: #e9f7ff; 
+            overflow-y: auto; 
+            padding-top: 20px;
+            border-left: 1px solid #007bff;
+        }
+
+        .announcements-sidebar h2 {
+            margin-left: 15px;
+            font-size: 1.5rem;
+            color: #333;
+        }
+
         .announcements-list {
-            overflow-y: scroll;
-            padding: 10px;
-            height: 200px;
-            display: grid;
-            background-color: white;
-            gap: 10px;
+            margin-top: 20px;
+            margin-left: 5px;
+            margin-right: 5px;
+            padding: 0;
+            list-style: none;
         }
-
-        #announcements {
-            color: black;
-            padding: 10px;
-            text-align: center;
-            margin-bottom: 10px;
-        }
-
-            #announcements h2 {
-                margin: 0;
-            }
 
         .annoncement-item {
-            padding: 20px;
-            height: 100px;
-            background-color: #f4f4f4;
-            border: 1px solid red;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+            padding: 15px;
+            margin-bottom: 10px;
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .annoncement-item h3 {
+            color: #007bff;
+        }
+
+        .events-content {
+            padding: 0px 10px;
+            width: 100%;
         }
 
         #events-section {
             padding: 20px;
         }
 
-            #events-section h2 {
-                color: #333;
-                margin-bottom: 20px;
-                text-align: center;
-            }
+        #events-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
         .search-bar {
             margin-bottom: 30px;
             text-align: center;
         }
 
-            .search-bar input, .search-bar select {
-                padding: 10px;
-                width: 50%;
-                margin-right: 10px;
-                margin:5px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
+        .search-bar input, .search-bar select {
+            padding: 10px;
+            width: 50%;
+            margin-right: 10px;
+            margin:5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
 
-            .search-bar button {
-                padding: 10px 15px;
-                background-color: #007bff;
-                color: white;
-                border: none;
-                border-radius: 5px;
-                cursor: pointer;
-            }
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
 
-                .search-bar button:hover {
-                    background-color: #007bff;
-                }
+        .search-bar button:hover {
+            background-color: #007bff;
+        }
 
         .event-list {
             display: grid;
-            max-height: 300px;
+            max-height: 600px;
             overflow: auto;
             margin-bottom:20px;
             gap: 20px;
@@ -87,124 +103,133 @@
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
         }
 
-            .event-item h3 {
-                margin-top: 0;
-                color: #333;
-                border-bottom: 2px solid #007bff;
-                padding-bottom: 10px;
-            }
+        .event-item h3 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
 
-            .event-item p {
-                margin: 5px 0;
-                color: #666;
-            }
+        .event-item p {
+            margin: 5px 0;
+            color: #666;
+        }
 
-            .event-item .event-date {
-                color: #007bff;
-                font-weight: bold;
-            }
+        .event-item .event-date {
+            color: #007bff;
+            font-weight: bold;
+        }
 
-            .event-item .event-location {
-                color: #333;
-                font-style: italic;
-            }
+        .event-item .event-location {
+            color: #333;
+            font-style: italic;
+        }
+
     </style>
 </head>
 
 <body>
-    <header id="announcements">
+    <!--
+        Code Attribution:
+        Title:How TO - Fixed Sidebar
+        Author: W3Schools
+        Link: https://www.w3schools.com/howto/howto_css_fixed_sidebar.asp
+    -->
+    <div class="announcements-sidebar">
         <h2>Latest Announcements</h2>
-    </header>
-    <div class="announcements-list">
-        @foreach(var annoncement in Model.annoncements)
-        {
-            <div class="annoncement-item">
-                <h3>@annoncement.AnnoncementTitle</h3>
-                <p>Description: @annoncement.AnnoncementMessage</p>
-            </div>
-        }
-    </div>
-
-    <section id="events-section">
-        <h2>Upcoming Events</h2>
-
-        <div class="search-bar">
-            <form method="get" asp-action="Index">
-                <input type="text" name="searchString" placeholder="Search for events by name..." />
-                <br />
-                <select name="eventCategory">
-                    <option value="">All Categories</option>
-                    @foreach (var category in Model.categories)
-                    {
-                        <option value="@category">@category</option>
-                    }
-                </select><br />
-                <input type="date" name="eventDate" /><br />
-                <button type="submit">Search</button>
-            </form>
-        </div>
-
-        <div class="event-list">
-            @foreach (var ev in Model.municipalityEvents)
+        <div class="announcements-list">
+            @foreach(var annoncement in Model.annoncements)
             {
-                @if (ev.Value.EventDateTime >= DateTime.Now)
-                {
-                    <div class="event-item">
-                        <h3>@ev.Value.EventName</h3>
-                        <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
-                        <p class="event-location">Location: @ev.Value.EventLocation</p>
-                        <p>Category: @ev.Value.EventCategory</p>
-                        <p>Description: @ev.Value.EventDescription</p>
-                    </div>
-                }
+                <div class="annoncement-item">
+                    <h3>@annoncement.AnnoncementTitle</h3>
+                    <p>Description: @annoncement.AnnoncementMessage</p>
+                </div>
             }
         </div>
-        @if(Model.categorySearchEvents.Count > 0)
-        {
-            <h2>Events with the same category</h2>
+    </div>
+
+    <div class="events-content">
+        <section id="events-section">
+            <h2>Upcoming Events</h2>
+
+            <div class="search-bar">
+                <form method="get" asp-action="Index">
+                    <input type="text" name="searchString" placeholder="Search for events by name..." />
+                    <br />
+                    <select name="eventCategory">
+                        <option value="">All Categories</option>
+                        @foreach (var category in Model.categories)
+                        {
+                            <option value="@category">@category</option>
+                        }
+                    </select><br />
+                    <input type="date" name="eventDate" /><br />
+                    <button type="submit">Search</button>
+                </form>
+            </div>
+
             <div class="event-list">
-                @foreach (var ev in Model.categorySearchEvents)
+                @foreach (var ev in Model.municipalityEvents)
                 {
-                    <div class="event-item">
-                        <h3>@ev.Value.EventName</h3>
-                        <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
-                        <p class="event-location">Location: @ev.Value.EventLocation</p>
-                        <p>Category: @ev.Value.EventCategory</p>
-                        <p>Description: @ev.Value.EventDescription</p>
-                    </div>
+                    @if (ev.Value.EventDateTime >= DateTime.Now)
+                    {
+                        <div class="event-item">
+                            <h3>@ev.Value.EventName</h3>
+                            <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                            <p class="event-location">Location: @ev.Value.EventLocation</p>
+                            <p>Category: @ev.Value.EventCategory</p>
+                            <p>Description: @ev.Value.EventDescription</p>
+                        </div>
+                    }
                 }
             </div>
-        }
-        @if (Model.dateSearchEvents.Count > 0)
-        {
-            <h2>Events happening on the same day</h2>
-            <div class="event-list">
-                @foreach (var ev in Model.dateSearchEvents)
-                {
-                    <div class="event-item">
-                        <h3>@ev.Value.EventName</h3>
-                        <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
-                        <p class="event-location">Location: @ev.Value.EventLocation</p>
-                        <p>Category: @ev.Value.EventCategory</p>
-                        <p>Description: @ev.Value.EventDescription</p>
-                    </div>
-                }
-            </div>
-        }
-        @if (Model.recommendedEvents.Count > 0){
-            <h2>Recommended Events</h2>
-            <div class="event-list">
-                @foreach (var ev in Model.recommendedEvents)
-                {
-                    <div class="event-item">
-                        <h3>@ev.Value.EventName</h3>
-                        <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
-                        <p class="event-location">Location: @ev.Value.EventLocation</p>
-                        <p>Category: @ev.Value.EventCategory</p>
-                        <p>Description: @ev.Value.EventDescription</p>
-                    </div>
-                }
-            </div>
-        }
-    </section>
+            @if(Model.categorySearchEvents.Count > 0)
+            {
+                <h2>Events with the same category</h2>
+                <div class="event-list">
+                    @foreach (var ev in Model.categorySearchEvents)
+                    {
+                        <div class="event-item">
+                            <h3>@ev.Value.EventName</h3>
+                            <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                            <p class="event-location">Location: @ev.Value.EventLocation</p>
+                            <p>Category: @ev.Value.EventCategory</p>
+                            <p>Description: @ev.Value.EventDescription</p>
+                        </div>
+                    }
+                </div>
+            }
+            @if (Model.dateSearchEvents.Count > 0)
+            {
+                <h2>Events happening on the same day</h2>
+                <div class="event-list">
+                    @foreach (var ev in Model.dateSearchEvents)
+                    {
+                        <div class="event-item">
+                            <h3>@ev.Value.EventName</h3>
+                            <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                            <p class="event-location">Location: @ev.Value.EventLocation</p>
+                            <p>Category: @ev.Value.EventCategory</p>
+                            <p>Description: @ev.Value.EventDescription</p>
+                        </div>
+                    }
+                </div>
+            }
+            @if (Model.recommendedEvents.Count > 0){
+                <h2>Recommended Events</h2>
+                <div class="event-list">
+                    @foreach (var ev in Model.recommendedEvents)
+                    {
+                        <div class="event-item">
+                            <h3>@ev.Value.EventName</h3>
+                            <p class="event-date">Date: @ev.Value.EventDateTime.ToString("dd MMMM yyyy, HH:mm")</p>
+                            <p class="event-location">Location: @ev.Value.EventLocation</p>
+                            <p>Category: @ev.Value.EventCategory</p>
+                            <p>Description: @ev.Value.EventDescription</p>
+                        </div>
+                    }
+                </div>
+            }
+        </section>
+    </div>
 </body>
