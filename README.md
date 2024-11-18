@@ -13,6 +13,8 @@ A municiple system which allows users to create and view reports.
 * Once the project is unzipped run it using visual studio.
 * To access features please sign in. The user accounts can be found in the homecontroller class or you can sign in with the username: Garth and password: password.
 
+#### Read Below to learn more about how the app works and the functionality of each page.
+
 ## About the app
 
 ### Sign in screen
