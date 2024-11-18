@@ -1,0 +1,119 @@
+﻿@model List<Node>
+
+<style>
+
+    #events-section {
+        padding: 20px;
+    }
+
+        #events-section h2 {
+            color: #333;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+    .search-bar {
+        margin-bottom: 30px;
+        text-align: center;
+    }
+
+        .search-bar input, .search-bar select {
+            padding: 10px;
+            width: 50%;
+            margin-right: 10px;
+            margin: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .search-bar button {
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+            .search-bar button:hover {
+                background-color: #007bff;
+            }
+
+    .items {
+        width: 100%;
+        text-align: center;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 10px;
+    }
+
+    tr:hover {
+        background-color: #E5FAFE;
+    }
+
+    .table-style {
+        width: 100%;
+        border-collapse: separate;
+        background-color: white;
+        border-radius: 12px;
+        overflow: hidden;
+        border: 1px solid black;
+        border-spacing: 0;
+        margin-bottom: 10px;
+    }
+
+</style>
+
+<section id="events-section">
+    <h2>Service Request Status</h2>
+
+    <div class="search-bar">
+        <form method="get" asp-action="Index">
+            <input type="number" name="searchString" placeholder="Search for requests by id..." />
+            <br />
+            <select name="status">
+                <option value="">Status</option>
+                <option value="Complete">Complete</option>
+                <option value="Pending">Pending</option>
+                <option value="In Progress">In Progress</option>
+            </select><br />
+            <select name="priority">
+                <option value="">Priority</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+            </select><br />
+            <input type="date" name="requestDate" /><br />
+            <button type="submit">Search</button>
+        </form>
+    </div>
+</section>
+
+<div class="items">
+    <table class="table-style">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>Description</th>
+                <th>Status</th>
+                <th>Priority</th>
+                <th>Submission Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        @foreach (var request in Model)
+        {
+            <tbody>
+                <tr>
+                    <td>@request.data.RequestId</td>
+                    <td>@request.data.Description</td>
+                    <td>@request.data.Status</td>
+                    <td>@request.data.Priority</td>
+                    <td>@request.data.SubmissionDate.ToString("yyyy/MM/dd")</td>
+                    <td><a href="@Url.Action("Dependencies", "ServiceRequest", new { requestId = request.data.RequestId })" class="btn btn-primary btn-sm">Dependencies</a></td>
+                </tr>
+            </tbody>
+        }
+    </table>
+</div>

@@ -1,0 +1,86 @@
+﻿@model DependencyPage
+
+@if (Model.nodes.Count <= 0)
+{
+    <h3>There are no dependencies found for @Model.node.data.Description.</h3>
+}
+else
+{
+    var completed = Model.nodes.Where(x => x.data.Status == "Complete").ToList();
+    var notCompleted = Model.nodes.Where(x => x.data.Status != "Complete").ToList();
+    <h3>@Model.node.data.Description</h3>
+    <h4>Completion status: @completed.Count/@Model.nodes.Count</h4>
+    @if(notCompleted.Count > 0)
+    {
+        <h5 style="margin-top: 20px;">The following requests must be completed before this is finished:</h5>
+        <ul class="list-group">
+            @foreach (var dependency in notCompleted)
+            {
+                <div class="event-item">
+                    <h5>Description: @dependency.data.Description</h5>
+                    <p class="event-date">Submission Date: @dependency.data.SubmissionDate</p>
+                    <p class="event-location">ID: @dependency.data.RequestId</p>
+                    <p>Priority: @dependency.data.Priority</p>
+                    <p>Status: @dependency.data.Status</p>
+                </div>
+            }
+        </ul>
+    }
+    else
+    {
+        <h5>All requests completed</h5>
+    }
+    if(completed.Count > 0)
+    {
+        <h5 style="margin-top: 20px;">The following requests have been completed:</h5>
+        <ul class="list-group">
+            @foreach (var dependency in completed)
+            {
+                <div class="event-item">
+                    <h5>Description: @dependency.data.Description</h5>
+                    <p class="event-date">Submission Date: @dependency.data.SubmissionDate</p>
+                    <p class="event-location">ID: @dependency.data.RequestId</p>
+                    <p>Priority: @dependency.data.Priority</p>
+                    <p>Status: @dependency.data.Status</p>
+                </div>
+            }
+        </ul>
+    }
+    else{
+        <h5>No requests have been completed yet</h5>
+    }
+}
+<a href="@Url.Action("Index", "ServiceRequest")" class="btn btn-primary btn-sm">Back to List</a>
+<style>
+
+    .event-item {
+        background-color: #e9f7ff;
+        padding: 20px;
+        border: 1px solid #007bff;
+        border-radius: 10px;
+        margin-bottom: 5px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+        .event-item h5 {
+            margin-top: 0;
+            color: #333;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+        }
+
+        .event-item p {
+            margin: 5px 0;
+            color: #666;
+        }
+
+        .event-item .event-date {
+            color: #007bff;
+            font-weight: bold;
+        }
+
+        .event-item .event-location {
+            color: #333;
+            font-style: italic;
+        }
+</style>
