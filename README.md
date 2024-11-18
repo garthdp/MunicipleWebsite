@@ -53,3 +53,18 @@ A municiple system which allows users to create and view reports.
 ![image](https://github.com/user-attachments/assets/e8cfe19d-0ed1-4244-8fe2-264965d833a0)
 ![image](https://github.com/user-attachments/assets/8dbb6f3c-70b5-4df3-a7d4-038f9f5fee46)
 * Error messages when the user doesn't input information into input boxes.
+
+### Events Page
+![image](https://github.com/user-attachments/assets/1679182d-555a-4eda-8df8-06fe0b508f35)
+* This page will allow the user to search for events and then eventually start recommending events based on user searchs.
+
+### Service Requests
+![image](https://github.com/user-attachments/assets/2340ed7a-b3ee-4ab3-823d-6aff27baac3c)
+* This page shows all service requests which are stored in a tree.
+* This page also has a dependancy button which when pressed will show which other service requests the request is dependant on for it to be completed.
+
+### Dependancy Page
+![image](https://github.com/user-attachments/assets/2b05f39d-966e-478f-9dfb-1f034252abd8)
+* This page shows which services requests the selected service request is dependant on.
+* It also shows how far from completion the request is.
+
