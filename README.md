@@ -59,7 +59,7 @@ A municiple system which allows users to create and view reports.
 ### Events Page
 ![image](https://github.com/user-attachments/assets/3e33100e-95da-4692-8bc4-b0f64c3eea7e)
 * This page will allow the user to search for events and then eventually start recommending events based on user searchs.
-* I implemented changes based on feedback and made the annoncements bar and put it on the left.
+* I implemented changes based on feedback and made the annoncements bar and put it on the left. It looks weird in the screenshot but thats not how it looks please look at video.
 
 ### Service Requests
 ![image](https://github.com/user-attachments/assets/2340ed7a-b3ee-4ab3-823d-6aff27baac3c)
