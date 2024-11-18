@@ -155,11 +155,6 @@ namespace PROG_POE.Controllers
 
         public IActionResult Index()
         {
-            // redirects user to sign in if not signed in
-            if (HttpContext.Session.GetString("SessionUser") == "")
-            {
-                return RedirectToAction("SignIn", "Home");
-            }
             // makes initial empty userssearches queue
             var sessionData = HttpContext.Session.GetString("UserSearches");
             if (string.IsNullOrEmpty(sessionData))
@@ -175,11 +170,6 @@ namespace PROG_POE.Controllers
         [HttpGet]
         public IActionResult Index(string searchString, string eventCategory, DateTime? eventDate)
         {
-            // redirects user to sign in if not signed in
-            if (HttpContext.Session.GetString("SessionUser") == "")
-            {
-                return RedirectToAction("SignIn", "Home");
-            }
             // makes different lists from searches
             var exactEvents = from e in Events.Values
                               select e;

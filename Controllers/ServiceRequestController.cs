@@ -165,11 +165,6 @@ namespace PROG_POE.Controllers
         // shows list of all service requests
         public ActionResult Index()
         {
-            //makes report list for session on sign in 
-            if (HttpContext.Session.GetString("SessionUser") == "")
-            {
-                return RedirectToAction("SignIn");
-            }
             var nodes = tree.GetList();
             return View(nodes);
         }
@@ -178,11 +173,6 @@ namespace PROG_POE.Controllers
         // it shows which services requests need to be completed before this service request can be completed
         public ActionResult Dependencies(int requestId)
         {
-            //makes report list for session on sign in 
-            if (HttpContext.Session.GetString("SessionUser") == "")
-            {
-                return RedirectToAction("SignIn");
-            }
             // finds node
             var node = tree.GetList().FirstOrDefault(x=> x.data.RequestId == requestId);
 
@@ -200,11 +190,6 @@ namespace PROG_POE.Controllers
         [HttpGet]
         public IActionResult Index(string searchString, string priority, string status, DateTime? requestDate)
         {
-            //makes report list for session on sign in 
-            if (HttpContext.Session.GetString("SessionUser") == "")
-            {
-                return RedirectToAction("SignIn");
-            }
             RequestSearch search = new RequestSearch();
             // returns full list if nothing is selected
             if (string.IsNullOrEmpty(searchString) && string.IsNullOrEmpty(priority) && string.IsNullOrEmpty(status) && !requestDate.HasValue)
