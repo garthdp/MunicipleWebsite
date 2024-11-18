@@ -1,4 +1,4 @@
-# PROG7312 Part 1
+# PROG7312 POE
 
 A municiple system which allows users to create and view reports.
 
