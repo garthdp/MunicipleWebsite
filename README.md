@@ -57,8 +57,9 @@ A municiple system which allows users to create and view reports.
 * Error messages when the user doesn't input information into input boxes.
 
 ### Events Page
-![image](https://github.com/user-attachments/assets/1679182d-555a-4eda-8df8-06fe0b508f35)
+![image](https://github.com/user-attachments/assets/3e33100e-95da-4692-8bc4-b0f64c3eea7e)
 * This page will allow the user to search for events and then eventually start recommending events based on user searchs.
+* I implemented changes based on feedback and made the annoncements bar and put it on the left.
 
 ### Service Requests
 ![image](https://github.com/user-attachments/assets/2340ed7a-b3ee-4ab3-823d-6aff27baac3c)
