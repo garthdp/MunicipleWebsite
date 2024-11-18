@@ -2,6 +2,8 @@
 
 A municiple system which allows users to create and view reports.
 
+Video = https://youtu.be/rcjLSjUp-IM
+
 ## Getting Started
 
 ### Installation
