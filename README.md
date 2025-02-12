@@ -1,6 +1,6 @@
 # Municiple System
 
-A municiple system which allows users to create and view reports.
+A municiple system which allows users to create and view reports. This was made to show understanding of trees, graphs and queues.
 
 Video = https://youtu.be/rcjLSjUp-IM
 
