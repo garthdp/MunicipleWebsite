@@ -1,4 +1,4 @@
-# PROG7312 POE
+# Municiple System
 
 A municiple system which allows users to create and view reports.
 
